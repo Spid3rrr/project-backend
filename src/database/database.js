@@ -31,7 +31,7 @@ function migrate() {
             "jokeMedia" VARCHAR(255) NULL,
             "jokeDate" DATETIME NOT NULL,
             "upvotes" INT DEFAULT 1,
-            CONSTRAINT Joke_User_FK FOREIGN KEY (authorID) REFERENCES users(userID)
+            CONSTRAINT Joke_User_FK FOREIGN KEY (authorID) REFERENCES users(userID) ON DELETE CASCADE
             );
         
         INSERT INTO jokes (authorID,title,jokeText,jokeMedia,jokeDate) 
@@ -50,8 +50,8 @@ function migrate() {
                 "upvotes" INT NOT NULL DEFAULT 1,
                 "commentAuthorID" INT NOT NULL,
                 "jokeID" INT NOT NULL,
-                CONSTRAINT Comment_User_FK FOREIGN KEY (commentAuthorID) REFERENCES users(userID),
-                CONSTRAINT Comment_Joke_FK FOREIGN KEY (jokeID) REFERENCES jokes(jokeID)
+                CONSTRAINT Comment_User_FK FOREIGN KEY (commentAuthorID) REFERENCES users(userID) ON DELETE CASCADE,
+                CONSTRAINT Comment_Joke_FK FOREIGN KEY (jokeID) REFERENCES jokes(jokeID) ON DELETE CASCADE
                 );
         INSERT INTO comments (commentText,commentMedia,commentDate,commentAuthorID,jokeID) 
         VALUES ('Cool comment 1 !', '','${date}','1','1'),

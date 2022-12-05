@@ -49,11 +49,7 @@ function getUser(username) {
             let get = await db.prepare('SELECT * FROM users WHERE username = ?');
             user = await get.get(username);
             if(!user) throw Error("User not found !");
-            res = {
-                'user':user,
-                'code':200
-            }
-            resolve(res);
+            resolve(user);
         } catch(e) {
             e.code = 404;
             reject(e);
@@ -78,6 +74,7 @@ function updateUser(username,changes){
                 }
             resolve(res);
         } catch(e) {
+            console.log(e);
             e.code = 400;
             reject(e);
         }
@@ -97,6 +94,7 @@ function deleteUser(username) {
             }
             resolve(res);
         } catch(e) {
+            console.log(e);
             e.code = 400;
             reject(e);
         }
