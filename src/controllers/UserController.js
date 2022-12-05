@@ -1,8 +1,8 @@
-const db = require("../../database.js");
+const UserService = require("../database/user.service");
 
 const getUsers = async (request, response) => {
     try {
-        users = await db.getUsers();
+        users = await UserService.getUsers();
         response.status(200).json({ users: users });
     }
     catch (error) {
@@ -13,7 +13,7 @@ const getUsers = async (request, response) => {
 const getUser = async (request, response) => {
     const username = request.params.username;
     try {
-        user = await db.getUser(username);
+        user = await UserService.getUser(username);
     }
     catch (error) {
         response.status(404).json({ msg: "User not found" });
