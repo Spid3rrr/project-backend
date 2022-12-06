@@ -7,7 +7,7 @@ function registerUser(username, email, password, profilePic, biography) {
             let register_sql = await db.prepare('INSERT INTO users (username, email, passwordHash, profilePic, biography) VALUES ( ?, ?, ?, ?, ?)');
             await register_sql.run(username, email, md5(password), profilePic, biography);
             res = {
-                'msg':'User registered successfully !',
+                'message':'User registered successfully !',
                 'code':200
             }
         resolve(res);
@@ -69,7 +69,7 @@ function updateUser(username,changes){
                 changes.biography?changes.biography:user.biography,
                 username);
             res = {
-                    'msg':'User updated successfully !',
+                    'message':'User updated successfully !',
                     'code':200
                 }
             resolve(res);
@@ -89,7 +89,7 @@ function deleteUser(username) {
             let res = await del.run(username);
             if(!res) throw Error("User was not deleted !");
             res = {
-                'msg':'User deleted successfully !',
+                'message':'User deleted successfully !',
                 'code':200
             }
             resolve(res);
@@ -111,7 +111,7 @@ function updateUserUpvotes(username,upvoteValue=1){
             let res = await update.run(username,upvotes);
             if(!res) throw Error("User was not upvoted !");
             res = {
-                'msg':'User upvoted successfully !',
+                'message':'User upvoted successfully !',
                 'code':200
             }
             resolve(res);
@@ -123,5 +123,5 @@ function updateUserUpvotes(username,upvoteValue=1){
 }
 
 module.exports = {
-    registerUser,getUser,updateUser,deleteUser,getUsers,updateUserUpvotes
+    registerUser,getUser,updateUser,deleteUser,getUsers,updateUserUpvotes,loginUser
 };

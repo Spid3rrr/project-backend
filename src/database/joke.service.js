@@ -10,7 +10,7 @@ function createJoke(username, title, jokeText, jokeMedia) {
             let register_sql = await db.prepare('INSERT INTO jokes (authorID, title, jokeText, jokeMedia, jokeDate) VALUES ( ?, ?, ?, ?)');
             await register_sql.run(user.userID, title, jokeText, jokeMedia, date);
             res = {
-                'msg':'Joke added successfully !',
+                'message':'Joke added successfully !',
                 'code':200
             }
             await updateUserUpvotes(username);
@@ -51,7 +51,7 @@ function updateJoke(id,changes){
                 changes.jokeMedia?changes.jokeMedia:joke.jokeMedia,
                 id);
             res = {
-                    'msg':'Joke updated successfully !',
+                    'message':'Joke updated successfully !',
                     'code':200
                 }
             resolve(res);
@@ -71,7 +71,7 @@ function deleteJoke(id) {
             if(!res) throw Error("Joke was not deleted !");
             await updateUserUpvotes(joke.authorID,-joke.upvotes);
             res = {
-                'msg':'Joke deleted successfully !',
+                'message':'Joke deleted successfully !',
                 'code':200
             }
             resolve(res);
@@ -90,7 +90,7 @@ function upvoteJoke(id,upvoteValue=1){
             result = await update.run(joke.upvotes+upvoteValue,id);
             await updateUserUpvotes(joke.authorID,upvoteValue);
             res = {
-                    'msg':'Joke upvoted successfully !',
+                    'message':'Joke upvoted successfully !',
                     'code':200
                 }
             resolve(res);

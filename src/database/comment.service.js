@@ -12,7 +12,7 @@ function createComment(username, jokeID, commentText, commentMedia) {
             await upvoteJoke(jokeID);
             await updateUserUpvotes(user.userID);
             res = {
-                'msg':'Comment added successfully !',
+                'message':'Comment added successfully !',
                 'code':200
             }
         resolve(res);
@@ -51,7 +51,7 @@ function updateComment(id,changes){
                 changes.commentMedia?changes.commentMedia:joke.commentMedia,
                 id);
             res = {
-                    'msg':'Comment updated successfully !',
+                    'message':'Comment updated successfully !',
                     'code':200
                 }
             resolve(res);
@@ -70,7 +70,7 @@ function upvoteComment(id,upvoteValue=1){
             result = await update.run(comment.upvotes+upvoteValue,id);
             await upvoteJoke(comment.jokeID,upvoteValue);
             res = {
-                    'msg':'Comment upvoted successfully !',
+                    'message':'Comment upvoted successfully !',
                     'code':200
                 }
             resolve(res);
@@ -89,7 +89,7 @@ function deleteComment(id){
             result = await update.run(id);
             await upvoteJoke(comment.jokeID,-comment.upvotes);
             res = {
-                    'msg':'Comment upvoted successfully !',
+                    'message':'Comment upvoted successfully !',
                     'code':200
                 }
             resolve(res);

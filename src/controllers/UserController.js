@@ -1,4 +1,5 @@
 const UserService = require("../database/user.service");
+const jwtHelper = require("../helpers/jwtHelper");
 
 const getUsers = async (request, response) => {
     try {
@@ -6,7 +7,7 @@ const getUsers = async (request, response) => {
         response.status(200).json({ users: users });
     }
     catch (error) {
-        response.status(500).json({ msg: "Error: can't get users", error:error });
+        response.status(500).json({ message: "Can't get users"});
     }
 };
 
@@ -18,7 +19,7 @@ const registerUser = async (request, response) => {
         response.status(200).json();
     }
     catch (error) {
-        response.status(500).json({ msg: "User not created", error:error });
+        response.status(500).json({ message: "User not created"});
     }
 };
 
@@ -29,7 +30,7 @@ const getUser = async (request, response) => {
         response.status(200).json(user);
     }
     catch (error) {
-        response.status(404).json({ msg: "User not found" });
+        response.status(404).json({ message: "User not found" });
     }
 };
 
@@ -38,10 +39,10 @@ const updateUser = async (request, response) => {
     const changes = request.body;
     try {
         user = await UserService.updateUser(username,changes);
-        response.status(200).json({msg: "User updated successfully"});
+        response.status(200).json({message: "User updated successfully"});
     }
     catch (error) {
-        response.status(400).json({ msg: "User not updated" });
+        response.status(400).json({ message: "User not updated" });
     }
 };
 
@@ -49,11 +50,25 @@ const deleteUser = async (request, response) => {
     const username = request.params.username;
     try {
         user = await UserService.deleteUser(username);
-        response.status(200).json({msg: "User deleted successfully"});
+        response.status(200).json({message: "User deleted successfully"});
     }
     catch (error) {
-        response.status(404).json({ msg: "User not deleted" });
+        response.status(404).json({ message: "User not deleted" });
     }
 };
 
-module.exports = {getUser,getUsers,registerUser,updateUser,deleteUser}
+const loginUser = async(request,response) => {
+    const creds = request.body;
+    try {
+        if(!creds.email||!creds.password) throw Error("Credentials not provided");
+        let res = await UserService.loginUser(creds.email,creds.password);
+        if(!res) throw Error("Username or Password incorrect!");
+        let token = jwtHelper.generateToken(res.username);
+        response.status(200).json({username:res.username,token:token});
+    }
+    catch (error){
+        response.status(400).json({message:"Username or Password incorrect!"});
+    }
+};
+
+module.exports = {getUser,getUsers,registerUser,updateUser,deleteUser,loginUser}
