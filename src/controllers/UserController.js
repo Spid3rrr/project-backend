@@ -1,4 +1,5 @@
 const UserService = require("../database/user.service");
+
 const jwtHelper = require("../helpers/jwtHelper");
 
 const getUsers = async (request, response) => {
@@ -60,8 +61,8 @@ const deleteUser = async (request, response) => {
 const loginUser = async(request,response) => {
     const creds = request.body;
     try {
-        if(!creds.email||!creds.password) throw Error("Credentials not provided");
-        let res = await UserService.loginUser(creds.email,creds.password);
+        if(!creds.username||!creds.password) throw Error("Credentials not provided");
+        let res = await UserService.loginUser(creds.username,creds.password);
         if(!res) throw Error("Username or Password incorrect!");
         let token = jwtHelper.generateToken(res.username);
         response.status(200).json({username:res.username,token:token});

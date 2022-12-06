@@ -22,6 +22,7 @@ err
 });
 
 app.get('/', (req, res) => {
+    console.log("received GET request");
     res.send('Successful response.');
   });
 
