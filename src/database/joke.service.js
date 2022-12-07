@@ -4,8 +4,8 @@ const UserService = require("./user.service");
 function createJoke(username, title, jokeText, jokeMedia) {
     return new Promise(async (resolve, reject) => {
         try {
-            if(!title) throw Error("Joke title can't be empty !");
-            if(!jokeText && !jokeMedia) throw Error("joke Content can't be empty !");
+            // if(!title) throw Error("Joke title can't be empty !");
+            // if(!jokeText && !jokeMedia) throw Error("joke Content can't be empty !");
             let user = await UserService.getUser(username);
             let date = new Date().toISOString().slice(0, 19).replace('T', ' ');
             let register_sql = await db.prepare('INSERT INTO jokes (authorID, title, jokeText, jokeMedia, jokeDate) VALUES ( ?, ?, ?, ?, ?)');
