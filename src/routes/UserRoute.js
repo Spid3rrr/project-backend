@@ -5,9 +5,11 @@ const jwt = require("../helpers/jwtHelper")
 const userRoute = express.Router();
 
 
-const {getUsers,getUser,registerUser,updateUser,deleteUser,loginUser} = require("../controllers/UserController");
+const {getUsers,getUser,registerUser,updateUser,deleteUser,loginUser,getLeaderboard} = require("../controllers/UserController");
 
 userRoute.get("/", getUsers); // no parameters
+
+userRoute.get("/leaderboard",getLeaderboard);
 
 userRoute.post("/", registerUser); // body = {"username","email","password"}
 

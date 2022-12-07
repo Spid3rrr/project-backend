@@ -13,6 +13,17 @@ const getUsers = async (request, response) => {
     }
 };
 
+const getLeaderboard = async (request, response) => {
+    try {
+        users = await UserService.getLeaderboard();
+        response.status(200).json({ users: users });
+    }
+    catch (error) {
+        console.log(error);
+        response.status(500).json({ message: "Can't get leaderboard"});
+    }
+};
+
 const registerUser = async (request, response) => {
     try {
         const newUser = request.body;

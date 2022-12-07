@@ -43,6 +43,20 @@ function getUsers() {
     });
 }
 
+function getLeaderboard() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let get = await db.prepare('SELECT * FROM users ORDER BY upvotes DESC');
+            users = await get.all();
+            if(!users) throw Error("couldn't get leaderboard !");
+            resolve(users);
+        } catch(e) {
+            e.code = 404;
+            reject(e);
+        }
+    });
+}
+
 function getUser(username) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -135,5 +149,5 @@ function updateUserUpvotes(username,upvoteValue=1){
 }
 
 module.exports = {
-    registerUser,getUser,updateUser,deleteUser,getUsers,updateUserUpvotes,loginUser,getUserById
+    registerUser,getUser,updateUser,deleteUser,getUsers,updateUserUpvotes,loginUser,getUserById,getLeaderboard
 };
