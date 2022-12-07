@@ -8,9 +8,6 @@ function migrate() {
     let password = md5('admin');
     let date = new Date().toISOString().slice(0, 19).replace('T', ' ');
     return db.exec(`
-    DROP TABLE IF EXISTS comments;
-    DROP TABLE IF EXISTS jokes;
-    DROP TABLE IF EXISTS users;
     CREATE TABLE IF NOT EXISTS users (
         "userID" INTEGER PRIMARY KEY AUTOINCREMENT,
         "username" VARCHAR(45) NOT NULL UNIQUE,
