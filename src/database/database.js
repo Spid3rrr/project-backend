@@ -18,7 +18,7 @@ function migrate() {
         "upvotes" INTEGER DEFAULT 1
         );
 
-        INSERT INTO users (username,email,passwordHash,profilePic,biography) VALUES ('admin', 'admin@admin.com', '${password}', '', 'Hey ! Im an admin.' );
+        -- INSERT INTO users (username,email,passwordHash,profilePic,biography) VALUES ('admin', 'admin@admin.com', '${password}', '', 'Hey ! Im an admin.' );
 
         CREATE TABLE IF NOT EXISTS jokes (
             "jokeID" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,7 +31,7 @@ function migrate() {
             CONSTRAINT Joke_User_FK FOREIGN KEY (authorID) REFERENCES users(userID) ON DELETE CASCADE
             );
         
-        INSERT INTO jokes (authorID,title,jokeText,jokeMedia,jokeDate) 
+        -- INSERT INTO jokes (authorID,title,jokeText,jokeMedia,jokeDate) 
         VALUES ('1', 'Joke Title 1','Funny content 1','','${date}'),
         ('1', 'Joke Title 2','Funny content 2','','${date}'),
         ('1', 'Joke Title 3','Funny content 3','','${date}'),
@@ -50,7 +50,7 @@ function migrate() {
                 CONSTRAINT Comment_User_FK FOREIGN KEY (commentAuthorID) REFERENCES users(userID) ON DELETE CASCADE,
                 CONSTRAINT Comment_Joke_FK FOREIGN KEY (jokeID) REFERENCES jokes(jokeID) ON DELETE CASCADE
                 );
-        INSERT INTO comments (commentText,commentMedia,commentDate,commentAuthorID,jokeID) 
+        -- INSERT INTO comments (commentText,commentMedia,commentDate,commentAuthorID,jokeID) 
         VALUES ('Cool comment 1 !', '','${date}','1','1'),
         ('Cool comment 2 !', '','${date}','1','1'),
         ('Cool comment 3 !', '','${date}','1','1'),
