@@ -18,7 +18,7 @@ function migrate() {
         "passwordHash" VARCHAR(45) NOT NULL,
         "profilePic" VARCHAR(255) NULL,
         "biography" VARCHAR(255) NULL,
-        "upvotes" INTEGER DEFAULT 0
+        "upvotes" INTEGER DEFAULT 1
         );
 
         INSERT INTO users (username,email,passwordHash,profilePic,biography) VALUES ('admin', 'admin@admin.com', '${password}', '', 'Hey ! Im an admin.' );

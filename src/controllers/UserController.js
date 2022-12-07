@@ -8,6 +8,7 @@ const getUsers = async (request, response) => {
         response.status(200).json({ users: users });
     }
     catch (error) {
+        console.log(error);
         response.status(500).json({ message: "Can't get users"});
     }
 };
@@ -20,6 +21,7 @@ const registerUser = async (request, response) => {
         response.status(200).json();
     }
     catch (error) {
+        console.log(error);
         response.status(500).json({ message: "User not created"});
     }
 };
@@ -31,6 +33,7 @@ const getUser = async (request, response) => {
         response.status(200).json(user);
     }
     catch (error) {
+        console.log(error);
         response.status(404).json({ message: "User not found" });
     }
 };
@@ -43,6 +46,7 @@ const updateUser = async (request, response) => {
         response.status(200).json({message: "User updated successfully"});
     }
     catch (error) {
+        console.log(error);
         response.status(400).json({ message: "User not updated" });
     }
 };
@@ -54,6 +58,7 @@ const deleteUser = async (request, response) => {
         response.status(200).json({message: "User deleted successfully"});
     }
     catch (error) {
+        console.log(error);
         response.status(404).json({ message: "User not deleted" });
     }
 };
@@ -68,6 +73,7 @@ const loginUser = async(request,response) => {
         response.status(200).json({username:res.username,token:token});
     }
     catch (error){
+        console.log(error);
         response.status(400).json({message:"Username or Password incorrect!"});
     }
 };

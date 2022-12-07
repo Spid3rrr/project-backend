@@ -56,6 +56,20 @@ function getUser(username) {
         }
     });
 }
+function getUserById(id) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let get = await db.prepare('SELECT * FROM users WHERE userID = ?');
+            user = await get.get(id);
+            if(!user) throw Error("User not found !");
+            resolve(user);
+        } catch(e) {
+            e.code = 404;
+            reject(e);
+        }
+    });
+}
+
 
 function updateUser(username,changes){
     return new Promise(async (resolve, reject) => {
@@ -104,11 +118,9 @@ function deleteUser(username) {
 function updateUserUpvotes(username,upvoteValue=1){
     return new Promise(async (resolve, reject) => {
         try {
-            let user = await getUser(username);
-            let upvotes = user.upvotes;
-            upvotes += upvoteValue;
             let update = await db.prepare('UPDATE users SET upvotes=? WHERE username = ?');
-            let res = await update.run(username,upvotes);
+            let user = await getUser(username);
+            let res = await update.run(user.upvotes+upvoteValue,username);
             if(!res) throw Error("User was not upvoted !");
             res = {
                 'message':'User upvoted successfully !',
@@ -123,5 +135,5 @@ function updateUserUpvotes(username,upvoteValue=1){
 }
 
 module.exports = {
-    registerUser,getUser,updateUser,deleteUser,getUsers,updateUserUpvotes,loginUser
+    registerUser,getUser,updateUser,deleteUser,getUsers,updateUserUpvotes,loginUser,getUserById
 };

@@ -1,19 +1,20 @@
 const {db} = require('./database');
+const UserService = require("./user.service");
 
 function createJoke(username, title, jokeText, jokeMedia) {
     return new Promise(async (resolve, reject) => {
         try {
             if(!title) throw Error("Joke title can't be empty !");
             if(!jokeText && !jokeMedia) throw Error("joke Content can't be empty !");
-            let user = getUser(username);
+            let user = await UserService.getUser(username);
             let date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-            let register_sql = await db.prepare('INSERT INTO jokes (authorID, title, jokeText, jokeMedia, jokeDate) VALUES ( ?, ?, ?, ?)');
+            let register_sql = await db.prepare('INSERT INTO jokes (authorID, title, jokeText, jokeMedia, jokeDate) VALUES ( ?, ?, ?, ?, ?)');
             await register_sql.run(user.userID, title, jokeText, jokeMedia, date);
             res = {
                 'message':'Joke added successfully !',
                 'code':200
             }
-            await updateUserUpvotes(username);
+            await UserService.updateUserUpvotes(username);
             resolve(res);
         } catch(e) {
             e.code = 400;
@@ -28,11 +29,7 @@ function getJoke(id){
             let get = await db.prepare('SELECT * FROM jokes WHERE jokeID = ?');
             joke = await get.get(id);
             if(!joke) throw Error("Joke not found !");
-            res = {
-                'joke':joke,
-                'code':200
-            }
-            resolve(res);
+            resolve(joke);
         } catch(e) {
             e.code = 404;
             reject(e);
@@ -66,10 +63,14 @@ function deleteJoke(id) {
     return new Promise(async (resolve, reject) => {
         try {
             let joke = await getJoke(id);
+            console.log(joke);
             let del = await db.prepare('DELETE FROM jokes WHERE jokeID = ?');
             let res = await del.run(id);
             if(!res) throw Error("Joke was not deleted !");
-            await updateUserUpvotes(joke.authorID,-joke.upvotes);
+            console.log(joke.authorID);
+            let user = await UserService.getUserById(joke.authorID);
+            console.log(user);
+            await UserService.updateUserUpvotes(user.username,-joke.upvotes);
             res = {
                 'message':'Joke deleted successfully !',
                 'code':200
@@ -88,7 +89,8 @@ function upvoteJoke(id,upvoteValue=1){
             let joke = await getJoke(id);
             let update = await db.prepare('UPDATE jokes SET upvotes=? WHERE jokeID = ?');
             result = await update.run(joke.upvotes+upvoteValue,id);
-            await updateUserUpvotes(joke.authorID,upvoteValue);
+            let user = await UserService.getUserById(joke.authorID);
+            await UserService.updateUserUpvotes(user.username,upvoteValue);
             res = {
                     'message':'Joke upvoted successfully !',
                     'code':200
@@ -116,6 +118,50 @@ function getJokesByUser(username){
     });
 }
 
+function getJokes(){
+    return new Promise(async (resolve, reject) => {
+        try {
+            let get = await db.prepare('SELECT * FROM jokes');
+            jokes = await get.all();
+            if(!jokes) throw Error("couldn't get jokes");
+            resolve(jokes);
+        } catch(e) {
+            e.code = 404;
+            reject(e);
+        }
+    });
+}
+
+
+function getTrending(){
+    return new Promise(async (resolve, reject) => {
+        try {
+            let get = await db.prepare('SELECT * FROM jokes ORDER BY upvotes DESC');
+            jokes = await get.all();
+            if(!jokes) throw Error("couldn't get trending jokes");
+            resolve(jokes);
+        } catch(e) {
+            e.code = 404;
+            reject(e);
+        }
+    });
+}
+
+function getRecent(){
+    return new Promise(async (resolve, reject) => {
+        try {
+            let get = await db.prepare('SELECT * FROM jokes ORDER BY jokeDate DESC');
+            jokes = await get.all();
+            if(!jokes) throw Error("couldn't get trending jokes");
+            resolve(jokes);
+        } catch(e) {
+            e.code = 404;
+            reject(e);
+        }
+    });
+}
+
+
 module.exports = {
-    createJoke,getJoke,updateJoke,upvoteJoke,deleteJoke,getJokesByUser
+    getJokes,createJoke,getJoke,updateJoke,upvoteJoke,deleteJoke,getTrending,getRecent,upvoteJoke
 }

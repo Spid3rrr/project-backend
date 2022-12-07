@@ -3,7 +3,10 @@ const cors = require('cors');
 const dotenv = require("dotenv");
 
 const db = require("./src/database/database");
+
 const userRoute = require("./src/routes/UserRoute");
+const jokeRoute = require("./src/routes/JokeRoute");
+const commentRoute = require("./src/routes/CommentRoute");
 
 const app = express();
 
@@ -28,3 +31,5 @@ app.get('/', (req, res) => {
 
 
 app.use("/users", userRoute);
+app.use("/jokes", jokeRoute);
+app.use("/comments", commentRoute);
