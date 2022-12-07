@@ -91,4 +91,4 @@ const loginUser = async(request,response) => {
     }
 };
 
-module.exports = {getUser,getUsers,registerUser,updateUser,deleteUser,loginUser}
+module.exports = {getUser,getUsers,registerUser,updateUser,deleteUser,loginUser,getLeaderboard}
