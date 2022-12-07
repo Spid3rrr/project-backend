@@ -33,3 +33,5 @@ app.get('/', (req, res) => {
 app.use("/users", userRoute);
 app.use("/jokes", jokeRoute);
 app.use("/comments", commentRoute);
+
+module.exports = {app};

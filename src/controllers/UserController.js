@@ -29,7 +29,7 @@ const registerUser = async (request, response) => {
         const newUser = request.body;
         if(!newUser.username || !newUser.email || !newUser.password)  throw Error("missing data !");
         await UserService.registerUser(newUser.username,newUser.email,newUser.password,newUser.profilePic?newUser.profilePic:"",newUser.biography?newUser.biography:"");
-        response.status(200).json();
+        response.status(200).json({message:"User created successfullyy","username":newUser.username});
     }
     catch (error) {
         console.log(error);
