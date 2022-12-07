@@ -11,7 +11,7 @@ const commentRoute = require("./src/routes/CommentRoute");
 const app = express();
 
 app.use(express.json());
-app.use(cors({origin:'*'}));
+app.use(cors());
 
 dotenv.config();
 
