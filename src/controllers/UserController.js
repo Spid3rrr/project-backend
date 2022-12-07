@@ -69,8 +69,10 @@ const loginUser = async(request,response) => {
         if(!creds.username||!creds.password) throw Error("Credentials not provided");
         let res = await UserService.loginUser(creds.username,creds.password);
         if(!res) throw Error("Username or Password incorrect!");
+        let user = await UserService.getUser(creds.username);
         let token = jwtHelper.generateToken(res.username);
-        response.status(200).json({username:res.username,token:token});
+        user.token=token;
+        response.status(200).json(user);
     }
     catch (error){
         console.log(error);

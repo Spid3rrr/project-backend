@@ -21,7 +21,7 @@ function registerUser(username, email, password, profilePic, biography) {
 function loginUser(username, password) {
     return new Promise(async (resolve, reject) => {
         try {
-            let login = await db.prepare('SELECT username FROM users WHERE username = ? and + = ?');
+            let login = await db.prepare('SELECT username FROM users WHERE username = ? and passwordHash = ?');
             resolve(await login.get(username, md5(password)));
         } catch(e) {
             reject(e);
