@@ -30,7 +30,7 @@ const createComment = async (request, response) => {
     const {author,commentText,commentMedia} = request.body;
     try {
         comment = await CommentService.createComment(author,JokeID,commentText,commentMedia);
-        response.status(200).json({ message: "comment created" });
+        response.status(200).json({ message: "comment created", comment:request.body });
     }
     catch (error) {
         console.log(error);

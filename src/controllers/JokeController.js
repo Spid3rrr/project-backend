@@ -50,7 +50,7 @@ const createJoke = async (request, response) => {
     try {
         const newJoke = request.body;
         await JokeService.createJoke(newJoke.author,newJoke.title,newJoke.jokeText,newJoke.jokeMedia);
-        response.status(200).json();
+        response.status(200).json({message : "Joke created", joke:newJoke});
     }
     catch (error) {
         console.log(error);
